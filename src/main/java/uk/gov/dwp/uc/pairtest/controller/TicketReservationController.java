@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uk.gov.dwp.uc.pairtest.TicketService;
+import uk.gov.dwp.uc.pairtest.service.TicketService;
 import uk.gov.dwp.uc.pairtest.domain.TicketReservationRequest;
 import uk.gov.dwp.uc.pairtest.domain.TicketReservationResponse;
 import uk.gov.dwp.uc.pairtest.domain.TicketTypeRequest;

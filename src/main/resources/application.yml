@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: cinema-tickets
+
+server:
+  port: 9090
+  error:
+    include-message: always
+    include-binding-errors: always
+
+ticketServiceConfig:
+  maxTickets: 50
+  prices:
+    ADULT: 20
+    CHILD: 10
+    INFANT: 0
+
