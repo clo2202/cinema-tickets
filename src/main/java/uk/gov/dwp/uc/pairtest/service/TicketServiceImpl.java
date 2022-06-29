@@ -1,9 +1,11 @@
 package uk.gov.dwp.uc.pairtest.service;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import thirdparty.paymentgateway.TicketPaymentService;
 import uk.gov.dwp.uc.pairtest.domain.TicketTypeRequest;
 import uk.gov.dwp.uc.pairtest.exception.InvalidPurchaseException;
+import uk.gov.dwp.uc.pairtest.service.calculator.TicketReservationCalculator;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,7 +14,12 @@ import java.util.stream.Collectors;
 @Service
 public class TicketServiceImpl implements TicketService {
 
-    private int maxNoOfTicketsAllowed = 20;
+    private static int MAX_TICKETS = 20;
+
+    @Autowired
+    private TicketPaymentService ticketPaymentService;
+    @Autowired
+    private TicketReservationCalculator ticketReservationCalculator;
 
     /**
      * Should only have private methods other than the one below.
@@ -20,6 +27,8 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public void purchaseTickets(Long accountId, TicketTypeRequest... ticketTypeRequests) throws InvalidPurchaseException {
         validateTicketPurchase(ticketTypeRequests);
+        int totalPrice = ticketReservationCalculator.calculateTotalPrice(ticketTypeRequests);
+        ticketPaymentService.makePayment(accountId, totalPrice);
     }
 
     private void validateTicketPurchase(TicketTypeRequest[] ticketTypeRequests) {
@@ -33,7 +42,7 @@ public class TicketServiceImpl implements TicketService {
             throw new InvalidPurchaseException("Purchase must include at least 1 adult");
         }
 
-        if (totalTickets > maxNoOfTicketsAllowed) {
+        if (totalTickets > MAX_TICKETS) {
             throw new InvalidPurchaseException("Exceeded maximum number of tickets");
         }
     }

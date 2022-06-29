@@ -25,7 +25,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
                 .map(x -> x.getDefaultMessage())
                 .collect(Collectors.toList());
 
-        CinemaTicketApiError errorResponse = new CinemaTicketApiError(status.value(), "Request validation failed", errors);
+        TicketApiError errorResponse = new TicketApiError(status.value(), "Request validation failed", errors);
 
         return new ResponseEntity(errorResponse, HttpStatus.BAD_REQUEST);
     }

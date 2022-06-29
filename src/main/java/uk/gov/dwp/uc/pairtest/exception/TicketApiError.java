@@ -2,13 +2,13 @@ package uk.gov.dwp.uc.pairtest.exception;
 
 import java.util.List;
 
-public class CinemaTicketApiError {
+public class TicketApiError {
 
     private final int status;
     private final String message;
     private final List<String> errors;
 
-    public CinemaTicketApiError(int status, String message, List<String> errors) {
+    public TicketApiError(int status, String message, List<String> errors) {
         this.status = status;
         this.message = message;
         this.errors = errors;
