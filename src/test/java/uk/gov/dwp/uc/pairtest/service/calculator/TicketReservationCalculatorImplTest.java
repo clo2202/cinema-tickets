@@ -19,4 +19,14 @@ public class TicketReservationCalculatorImplTest {
         assertEquals(result, 50);
     }
 
+    @Test
+    public void shouldCalculateTotalNoOfSeats() {
+        TicketTypeRequest request1 = new TicketTypeRequest(TicketTypeRequest.Type.ADULT, 2);
+        TicketTypeRequest request2 = new TicketTypeRequest(TicketTypeRequest.Type.CHILD, 1);
+        TicketTypeRequest request3 = new TicketTypeRequest(TicketTypeRequest.Type.INFANT, 1);
+
+        int result = underTest.calculateTotalSeats(request1, request2, request3);
+        assertEquals(result, 3);
+    }
+
 }
