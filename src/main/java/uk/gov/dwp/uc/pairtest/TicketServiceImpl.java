@@ -1,9 +1,10 @@
 package uk.gov.dwp.uc.pairtest;
 
+import org.springframework.stereotype.Service;
 import uk.gov.dwp.uc.pairtest.domain.TicketTypeRequest;
 import uk.gov.dwp.uc.pairtest.exception.InvalidPurchaseException;
 
-
+@Service
 public class TicketServiceImpl implements TicketService {
 
     /**
@@ -11,6 +12,12 @@ public class TicketServiceImpl implements TicketService {
      */
     @Override
     public void purchaseTickets(Long accountId, TicketTypeRequest... ticketTypeRequests) throws InvalidPurchaseException {
+
+        // validate ticketTypeRequest (not more than 20 tickets and contains an adult)
+        // calculate price
+        // calculate no. of tickets
+        // call TicketPaymentService
+        // call SeatReservationService
 
     }
 }
