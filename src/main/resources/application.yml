@@ -8,10 +8,3 @@ server:
     include-message: always
     include-binding-errors: always
 
-ticketServiceConfig:
-  maxTickets: 50
-  prices:
-    ADULT: 20
-    CHILD: 10
-    INFANT: 0
-

@@ -1,6 +1,8 @@
 package uk.gov.dwp.uc.pairtest.service;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,6 +11,8 @@ import thirdparty.seatbooking.SeatReservationService;
 import uk.gov.dwp.uc.pairtest.domain.TicketTypeRequest;
 import uk.gov.dwp.uc.pairtest.exception.InvalidPurchaseException;
 import uk.gov.dwp.uc.pairtest.service.calculator.TicketReservationCalculator;
+
+import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -41,12 +45,11 @@ public class TicketServiceImplTest {
         verifyNoInteractions(ticketReservationCalculator);
     }
 
-    @Test
-    public void shouldThrowAnExceptionWhenNoAdultTicketPresent() {
-        TicketTypeRequest ticketTypeRequest1 = new TicketTypeRequest(TicketTypeRequest.Type.CHILD, 1);
-
+    @ParameterizedTest
+    @MethodSource("nonAdultTicketType")
+    public void shouldThrowAnExceptionWhenNoAdultTicketPresent(TicketTypeRequest ticketTypeRequest) {
         InvalidPurchaseException exception =  assertThrows(InvalidPurchaseException.class, () -> {
-            underTest.purchaseTickets(1L, ticketTypeRequest1);
+            underTest.purchaseTickets(1L, ticketTypeRequest);
         });
 
         assertThat(exception.getMessage(), is("Purchase must include at least 1 adult"));
@@ -72,5 +75,12 @@ public class TicketServiceImplTest {
 
         underTest.purchaseTickets(1L, ticketTypeRequest1);
         verify(seatReservationService).reserveSeat(1L, 2);
+    }
+
+    private static Stream<TicketTypeRequest> nonAdultTicketType() {
+        return Stream.of(
+                new TicketTypeRequest(TicketTypeRequest.Type.CHILD, 1),
+                new TicketTypeRequest(TicketTypeRequest.Type.INFANT, 1)
+        );
     }
 }

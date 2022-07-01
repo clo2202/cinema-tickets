@@ -15,7 +15,7 @@ import javax.validation.Valid;
 public class TicketReservationController {
 
     @Autowired
-    TicketService ticketService;
+    private TicketService ticketService;
 
     @PostMapping("/book-tickets")
     public ResponseEntity<TicketReservationResponse> bookTickets(@Valid @RequestBody TicketReservationRequest ticketReservationRequest) {

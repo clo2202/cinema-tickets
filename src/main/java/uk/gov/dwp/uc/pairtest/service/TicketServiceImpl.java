@@ -1,5 +1,7 @@
 package uk.gov.dwp.uc.pairtest.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import thirdparty.paymentgateway.TicketPaymentService;
@@ -15,7 +17,8 @@ import java.util.stream.Collectors;
 @Service
 public class TicketServiceImpl implements TicketService {
 
-    private static int MAX_TICKETS = 20;
+    private int MAX_TICKETS = 20;
+    private Logger logger = LoggerFactory.getLogger(TicketServiceImpl.class);
 
     @Autowired
     private TicketPaymentService ticketPaymentService;
@@ -32,6 +35,8 @@ public class TicketServiceImpl implements TicketService {
         validateTicketPurchase(ticketTypeRequests);
         int totalPrice = ticketReservationCalculator.calculateTotalPrice(ticketTypeRequests);
         int totalSeats = ticketReservationCalculator.calculateTotalSeats(ticketTypeRequests);
+
+        logger.info("Making reservation for accountId: {}, total seats: {}, total price: {}", accountId, totalSeats, totalPrice);
         ticketPaymentService.makePayment(accountId, totalPrice);
         seatReservationService.reserveSeat(accountId, totalSeats);
     }
@@ -41,7 +46,7 @@ public class TicketServiceImpl implements TicketService {
                 .filter(request -> request.getTicketType() ==  TicketTypeRequest.Type.ADULT)
                 .collect(Collectors.toList());
 
-        int totalTickets = Arrays.stream(ticketTypeRequests).mapToInt(request -> request.getNoOfTickets()).sum();
+        int totalTickets = Arrays.stream(ticketTypeRequests).mapToInt(TicketTypeRequest::getNoOfTickets).sum();
 
         if (totalAdults.size() < 1) {
             throw new InvalidPurchaseException("Purchase must include at least 1 adult");

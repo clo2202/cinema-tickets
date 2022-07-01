@@ -8,12 +8,12 @@ import javax.validation.constraints.NotNull;
 /**
  * Immutable Object
  */
-public class TicketTypeRequest {
+public final class TicketTypeRequest {
 
     @Min(value = 1, message = "number of tickets cannot be less than 1")
-    private int noOfTickets;
+    private final int noOfTickets;
     @NotNull(message = "ticket type cannot be null")
-    private Type type;
+    private final Type type;
 
     public TicketTypeRequest(@JsonProperty("type") Type type,
                              @JsonProperty("noOfTickets") int noOfTickets) {

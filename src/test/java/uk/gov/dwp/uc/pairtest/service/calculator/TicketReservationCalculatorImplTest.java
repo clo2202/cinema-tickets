@@ -23,10 +23,18 @@ public class TicketReservationCalculatorImplTest {
     public void shouldCalculateTotalNoOfSeats() {
         TicketTypeRequest request1 = new TicketTypeRequest(TicketTypeRequest.Type.ADULT, 2);
         TicketTypeRequest request2 = new TicketTypeRequest(TicketTypeRequest.Type.CHILD, 1);
-        TicketTypeRequest request3 = new TicketTypeRequest(TicketTypeRequest.Type.INFANT, 1);
 
-        int result = underTest.calculateTotalSeats(request1, request2, request3);
+        int result = underTest.calculateTotalSeats(request1, request2);
         assertEquals(result, 3);
+    }
+
+    @Test
+    public void shouldNotAllocateInfantSeat() {
+        TicketTypeRequest request1 = new TicketTypeRequest(TicketTypeRequest.Type.ADULT, 2);
+        TicketTypeRequest request2 = new TicketTypeRequest(TicketTypeRequest.Type.INFANT, 1);
+
+        int result = underTest.calculateTotalSeats(request1, request2);
+        assertEquals(result, 2);
     }
 
 }
