@@ -70,10 +70,6 @@ POST /book-tickets
     {
         "noOfTickets": {{noOfTickets}},
         "type": {{type}}
-    },
-    {
-        "noOfTickets": {{noOfTickets}},
-        "type": {{type}}
     }]
 }
 ```
